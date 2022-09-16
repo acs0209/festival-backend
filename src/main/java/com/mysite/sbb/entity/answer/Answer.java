@@ -24,7 +24,6 @@ public class Answer {
     private String content;
 
     @ManyToOne
-    @JoinColumn
     private Question question;
 
     @CreatedDate
