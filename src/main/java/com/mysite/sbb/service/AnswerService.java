@@ -4,7 +4,6 @@ package com.mysite.sbb.service;
 import com.mysite.sbb.entity.answer.Answer;
 import com.mysite.sbb.entity.answer.AnswerRepository;
 import com.mysite.sbb.entity.question.Question;
-import com.mysite.sbb.entity.siteUser.SiteUser;
 import com.mysite.sbb.exception.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,14 +25,14 @@ public class AnswerService {
     private final QuestionService questionService;
 
     // 답변 생성
-    public Answer create(Question question, String content, SiteUser author) {
+    public void create(Question question, String content, String username, String password) {
         Answer answer = new Answer();
         answer.setContent(content);
         answer.setCreateDate(LocalDateTime.now());
         answer.setQuestion(question);
-        answer.setAuthor(author);
+        answer.setUsername(username);
+        answer.setPassword(password);
         this.answerRepository.save(answer);
-        return answer;
     }
 
     // 답변 페이징 처리
@@ -51,24 +50,17 @@ public class AnswerService {
         if (answer.isPresent()) {
             return answer.get();
         } else {
-            throw new DataNotFoundException("answer not found");
+            throw new DataNotFoundException("요청하신 데이터를 찾을 수 없습니다.");
         }
     }
 
     public void modify(Answer answer, String content) {
         answer.setContent(content);
-        answer.setModifyDate(LocalDateTime.now());
         this.answerRepository.save(answer);
     }
 
-    public void delete(Answer answer) {
+    public Boolean delete(Answer answer) {
         this.answerRepository.delete(answer);;
+        return true;
     }
-
-    public void vote(Answer answer, SiteUser siteUser) {
-        answer.getVoter().add(siteUser);
-        answerRepository.save(answer);
-    }
-
-
 }

@@ -19,27 +19,27 @@ public class ExControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalExHandle(IllegalArgumentException e) {
         log.error("[exceptionHandle] ex", e);
-        return new ErrorResult("BAD", e.getMessage());
+        return new ErrorResult("BAD", e.getMessage(), false);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResult> userExHandle(UserException e) {
         log.error("[exceptionHandle] ex", e);
-        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
+        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage(), false);
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResult> responseExHandle(ResponseStatusException e) {
         log.error("[exceptionHandle] ex", e);
-        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
+        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage(), false);
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResult> dataNotExHandle(DataNotFoundException e) {
         log.error("[exceptionHandle] ex", e);
-        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
+        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage(), false);
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
@@ -55,7 +55,7 @@ public class ExControllerAdvice {
     @ExceptionHandler
     public ErrorResult exHandle(Exception e) {
         log.error("[exceptionHandle] ex", e);
-        return new ErrorResult("EX", "내부 오류");
+        return new ErrorResult("EX", "내부 오류", false);
     }
 
 }

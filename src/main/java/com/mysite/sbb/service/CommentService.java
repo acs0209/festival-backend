@@ -4,17 +4,13 @@ import com.mysite.sbb.entity.answer.Answer;
 import com.mysite.sbb.entity.comment.Comment;
 import com.mysite.sbb.entity.comment.CommentRepository;
 import com.mysite.sbb.entity.question.Question;
-import com.mysite.sbb.entity.siteUser.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,23 +37,25 @@ public class CommentService {
 
 
     // 답변 댓글
-    public Comment create(Answer answer, SiteUser author, String content) {
+    public Comment create(Answer answer, String content, String username, String password) {
         Comment c = new Comment();
         c.setContent(content);
         c.setCreateDate(LocalDateTime.now());
         c.setAnswer(answer);
-        c.setAuthor(author);
+        c.setUsername(username);
+        c.setPassword(password);
         c = this.commentRepository.save(c);
         return c;
     }
 
     // 질문 댓글
-    public Comment create(Question question, SiteUser author, String content) {
+    public Comment create(Question question, String content, String username, String password) {
         Comment c = new Comment();
         c.setContent(content);
         c.setCreateDate(LocalDateTime.now());
         c.setQuestion(question);
-        c.setAuthor(author);
+        c.setUsername(username);
+        c.setPassword(password);
         c = this.commentRepository.save(c);
         return c;
     }
@@ -69,14 +67,14 @@ public class CommentService {
 
     public Comment modify(Comment c, String content) {
         c.setContent(content);
-        c.setModifyDate(LocalDateTime.now());
         c = this.commentRepository.save(c);
         return c;
     }
 
-    public void delete(Comment c) {
+    public Boolean delete(Comment c) {
 
         this.commentRepository.delete(c);
+        return true;
     }
 
 }

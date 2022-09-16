@@ -10,11 +10,9 @@ import lombok.Setter;
 public class CommentApiForm {
 
     private String content;
-    private Long questionId;
 
-    public CommentApiForm(String content, Long questionId) {
+    public CommentApiForm(String content) {
         this.content = content;
-        this.questionId = questionId;
     }
 
 }

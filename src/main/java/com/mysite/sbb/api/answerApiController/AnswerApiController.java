@@ -1,24 +1,21 @@
 package com.mysite.sbb.api.answerApiController;
 
+import com.mysite.sbb.configDto.DeleteInfoDto;
+import com.mysite.sbb.configDto.ModifyInfoDto;
+import com.mysite.sbb.configDto.SuccessDto;
 import com.mysite.sbb.controller.answerController.AnswerForm;
 import com.mysite.sbb.entity.answer.Answer;
 import com.mysite.sbb.entity.question.Question;
-import com.mysite.sbb.entity.siteUser.SiteUser;
 import com.mysite.sbb.service.AnswerService;
 import com.mysite.sbb.service.QuestionService;
-import com.mysite.sbb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/answer")
@@ -27,75 +24,58 @@ public class AnswerApiController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
-    private final UserService userService;
 
-
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
-    public ResponseEntity<AnswerApiForm> createAnswer(Model model, @PathVariable("id") Long id,
-                                       @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<AnswerApiForm> createAnswer(@PathVariable("id") Long id,
+                                       @Valid AnswerForm answerForm, BindingResult bindingResult) {
 
         Question question = questionService.getQuestion(id);
-        SiteUser siteUser = userService.getUser(principal.getName());
 
         if (bindingResult.hasErrors()) {
 
-            throw new IllegalArgumentException("잘못된 입력 값");
+            throw new IllegalArgumentException("잘못된 입력 값입니다.");
         }
-        Answer answer = this.answerService.create(question, answerForm.getContent(), siteUser);
+        this.answerService.create(question, answerForm.getContent(), answerForm.getUsername(), answerForm.getPassword());
 
         AnswerApiForm answerApiForm = new AnswerApiForm(answerForm.getContent());
         return ResponseEntity.ok(answerApiForm);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public ResponseEntity<AnswerForm> answerModify(AnswerForm answerForm, @PathVariable("id") Long id, Principal principal) {
+    public ResponseEntity<AnswerForm> answerModify(AnswerForm answerForm, @PathVariable("id") Long id) {
+
         Answer answer = this.answerService.getAnswer(id);
-        if (!answer.getAuthor().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
         answerForm.setContent(answer.getContent());
         return ResponseEntity.ok(answerForm);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PutMapping("/modify/{id}")
-    public ResponseEntity<AnswerApiForm> answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult,
-                               @PathVariable("id") Long id, Principal principal) {
+    public ResponseEntity<AnswerApiForm> answerModify(@Valid ModifyInfoDto modifyInfoDto, BindingResult bindingResult,
+                                                      @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
-            throw new IllegalArgumentException("잘못된 입력 값");
+            throw new IllegalArgumentException("잘못된 입력 값입니다.");
         }
         Answer answer = this.answerService.getAnswer(id);
-        if (!answer.getAuthor().getUsername().equals(principal.getName())) {
+
+        if (!answer.getPassword().equals(modifyInfoDto.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-        this.answerService.modify(answer, answerForm.getContent());
+        this.answerService.modify(answer, modifyInfoDto.getContent());
 
-        AnswerApiForm answerApiForm = new AnswerApiForm(answerForm.getContent());
+        AnswerApiForm answerApiForm = new AnswerApiForm(modifyInfoDto.getContent());
         return ResponseEntity.ok(answerApiForm);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{id}")
-    public Long answerDelete(Principal principal, @PathVariable("id")Long id) {
+    public ResponseEntity<SuccessDto> answerDelete(@Valid DeleteInfoDto deleteInfoDto, @PathVariable("id")Long id) {
         Answer answer = this.answerService.getAnswer(id);
-        if (!answer.getAuthor().getUsername().equals(principal.getName())) {
+
+        if (!answer.getPassword().equals(deleteInfoDto.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
-        this.answerService.delete(answer);
-        return answer.getQuestion().getId();
-    }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{id}")
-    public ResponseEntity<AnswerQuestionId> answerVote(Principal principal, @PathVariable("id") Long id) {
-        Answer answer = this.answerService.getAnswer(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.answerService.vote(answer, siteUser);
-
-        AnswerQuestionId answerQuestionId = new AnswerQuestionId(answer.getQuestion().getId(), answer.getId());
-        return ResponseEntity.ok(answerQuestionId);
+        SuccessDto successDto = new SuccessDto(this.answerService.delete(answer));
+        return ResponseEntity.ok(successDto);
     }
 
 }

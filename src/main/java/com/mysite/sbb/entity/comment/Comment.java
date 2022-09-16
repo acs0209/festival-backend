@@ -1,13 +1,14 @@
 package com.mysite.sbb.entity.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysite.sbb.entity.answer.Answer;
 import com.mysite.sbb.entity.question.Question;
-import com.mysite.sbb.entity.siteUser.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,14 +23,16 @@ public class Comment {
 
     private LocalDateTime createDate;
 
-    private LocalDateTime modifyDate;
+    private String username;
 
-    @ManyToOne
-    private SiteUser author;
+    @JsonIgnore
+    private String password;
 
+    @JsonIgnore
     @ManyToOne
     private Question question;
 
+    @JsonIgnore
     @ManyToOne
     private Answer answer;
 
@@ -50,4 +53,6 @@ public class Comment {
         return result;
     }
 
+//    @ManyToOne
+//    private SiteUser author;
 }

@@ -9,6 +9,12 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class CommentForm {
 
+    @NotEmpty(message = "작성자는 필수항목입니다.")
+    private String username;
+
+    @NotEmpty(message = "비밀번호는 필수항목입니다.")
+    private String password;
+
     @NotEmpty(message = "내용은 필수항목입니다.")
     private String content;
 

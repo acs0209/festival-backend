@@ -1,5 +1,6 @@
 package com.mysite.sbb.api.questionApiController;
 
+import com.mysite.sbb.api.commentApiController.CommentDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +21,6 @@ public class QuestionDto {
 
     private LocalDateTime createDate;
 
-    private LocalDateTime modifyDate;
-
     private String username;
 
     private Integer view;
@@ -29,15 +28,14 @@ public class QuestionDto {
     private Integer voter;
 
     public QuestionDto(Long id, String subject, String content, LocalDateTime createDate,
-                       LocalDateTime modifyDate, String username, Integer view, Integer voter) {
+                       String username, Integer view) {
         this.id = id;
         this.subject = subject;
         this.content = content;
         this.createDate = createDate;
-        this.modifyDate = modifyDate;
         this.username = username;
         this.view = view;
-        this.voter = voter;
     }
+
 
 }

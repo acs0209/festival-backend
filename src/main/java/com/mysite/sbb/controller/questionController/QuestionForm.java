@@ -10,6 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class QuestionForm {
+
+    @NotEmpty(message = "아이디는 필수항목입니다.")
+    private String username;
+
+    @NotEmpty(message = "비밀번호는 필수항목입니다.")
+    private String password;
+
     @NotEmpty(message="제목은 필수항목입니다.")
     @Size(max=200)
     private String subject;
@@ -17,8 +24,4 @@ public class QuestionForm {
     @NotEmpty(message="내용은 필수항목입니다.")
     private String content;
 
-//    public QuestionForm(String subject, String content) {
-//        this.subject = subject;
-//        this.content = content;
-//    }
 }

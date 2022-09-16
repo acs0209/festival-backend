@@ -11,10 +11,12 @@ public class QuestionApiForm {
 
     private String subject;
     private String content;
+    private String username;
 
-    public QuestionApiForm(String subject, String content) {
+    public QuestionApiForm(String subject, String content, String username) {
         this.subject = subject;
         this.content = content;
+        this.username = username;
     }
 
 }

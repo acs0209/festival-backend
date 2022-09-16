@@ -3,7 +3,6 @@ package com.mysite.sbb.entity.answer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysite.sbb.entity.comment.Comment;
 import com.mysite.sbb.entity.question.Question;
-import com.mysite.sbb.entity.siteUser.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,16 +30,11 @@ public class Answer {
     @CreatedDate
     private LocalDateTime createDate;
 
-    @ManyToOne
-    private SiteUser author;
-
-    // 질문이나 답변이 언제 수정되었는지 확인할 수 있도록 Question 과 Answer 엔티티에 수정 일시를 의미하는 modifyDate 속성
-    private LocalDateTime modifyDate;
-
-    @ManyToMany
-    private Set<SiteUser> voter;
+    private String username;
+    private String password;
 
     @JsonIgnore
     @OneToMany(mappedBy = "answer", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
+
 }

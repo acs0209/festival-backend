@@ -17,16 +17,13 @@ public class CommentDto {
 
     private LocalDateTime createDate;
 
-    private LocalDateTime modifyDate;
-
     private String username;
 
 
-    public CommentDto(Long id, String content, LocalDateTime createDate, LocalDateTime modifyDate, String username) {
+    public CommentDto(Long id, String content, LocalDateTime createDate, String username) {
         this.id = id;
         this.content = content;
         this.createDate = createDate;
-        this.modifyDate = modifyDate;
         this.username = username;
     }
 }

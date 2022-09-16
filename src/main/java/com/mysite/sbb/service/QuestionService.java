@@ -2,7 +2,6 @@ package com.mysite.sbb.service;
 
 import com.mysite.sbb.entity.question.Question;
 import com.mysite.sbb.entity.question.QuestionRepository;
-import com.mysite.sbb.entity.siteUser.SiteUser;
 import com.mysite.sbb.exception.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,24 +22,24 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+
+    public Page<Question> findAll(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.questionRepository.findAll(pageable);
+    }
+
     /*
     *   질문 목록을 조회하여 리턴하는 getList 메서드
-        public List<Question> getList() {
-            return questionRepository.findAll();
-        } 이 코드를 아래와 같이 수정
     * */
     // 검색어를 의미하는 매개변수 kw를 getList 에 추가하고 kw 값으로 Specification 객체를 생성하여 findAll 메서드 호출시 전달
     public Page<Question> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        //Specification<Question> spec = search(kw);
-        //return questionRepository.findAll(spec, pageable);
         return this.questionRepository.findAllByKeyword(kw, pageable);
     }
-//    getList 메서드는 정수 타입의 페이지번호를 입력받아 해당 페이지의 질문 목록을 리턴하는 메서드로 변경했다.
-//    Pageable 객체를 생성할때 사용한 PageRequest.of(page, 10)에서 page는 조회할 페이지의 번호이고 10은 한 페이지에
-//    보여줄 게시물의 갯수를 의미한다. 이렇게 하면 데이터 전체를 조회하지 않고 해당 페이지의 데이터만 조회하도록 쿼리가 변경된다.
 
 
     /*
@@ -53,7 +52,7 @@ public class QuestionService {
         if (question.isPresent()) {
             return question.get();
         } else {
-            throw new DataNotFoundException("question not found");
+            throw new DataNotFoundException("요청하신 데이터를 찾을 수 없습니다.");
         }
 
 
@@ -63,12 +62,13 @@ public class QuestionService {
        아닌지를 확인한 후에 get() 으로 실제 Question 객체 값을 얻어야 한다.
     * */
     }
-    public void create(String subject, String content, SiteUser user) {
+    public void create(String subject, String content, String username, String password) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
-        q.setAuthor(user);
+        q.setUsername(username);
+        q.setPassword(password);
         this.questionRepository.save(q);
         //return q;
     }
@@ -76,11 +76,9 @@ public class QuestionService {
     public void modify(Question question, String subject, String content) {
         question.setSubject(subject);
         question.setContent(content);
-        question.setModifyDate(LocalDateTime.now());
         this.questionRepository.save(question);
         // return question;
     }
-
 
     public Boolean delete(Question question) {
 
@@ -88,16 +86,10 @@ public class QuestionService {
         return true;
     }
 
-    public Boolean vote(Question question, SiteUser siteUser) {
-        question.getVoter().add(siteUser);
-        questionRepository.save(question);
-        return true;
-    }
 
     /* Views Counting */
     @Transactional
     public int updateView(Long id) {
         return questionRepository.updateView(id);
     }
-
 }
