@@ -38,7 +38,7 @@ public class LostAnswerApiController {
 //    public ResponseEntity<Answer> one(@PathVariable Long id) {
 //
 //        Answer answer = answerRepository.findById(id).orElse(null);
-//        if (answer == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        if (answer == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 //        return new ResponseEntity<>(answer, HttpStatus.OK);
 //    }
 
@@ -51,10 +51,10 @@ public class LostAnswerApiController {
         }
 
         LostPost lostPost = this.lostPostService.getQuestion(id);
-        if (lostPost == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (lostPost == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         LostAnswer lostAnswer = this.lostAnswerService.create(lostPost, lostAnswerForm);
-        if (lostAnswer == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (lostAnswer == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         CreateForm createForm = new CreateForm(lostAnswerForm.getContent(), lostAnswerForm.getUsername(), lostAnswer.getCreateDate());
 
@@ -66,7 +66,7 @@ public class LostAnswerApiController {
     public ResponseEntity<ModifyForm> answerModify(@Valid @RequestBody LostAnswer newLostAnswer, @PathVariable("id") Long id) {
 
         LostAnswer exLostAnswer = lostAnswerRepository.findById(id).orElse(null);
-        if (exLostAnswer == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (exLostAnswer == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         if (newLostAnswer.getPassword().equals(exLostAnswer.getPassword())) {
 

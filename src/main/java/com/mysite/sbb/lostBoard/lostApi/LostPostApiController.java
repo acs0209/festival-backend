@@ -128,7 +128,7 @@ class LostPostApiController {
         }
 
         LostPost exLostPost = repository.findById(id).orElse(null);
-        if (exLostPost == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (exLostPost == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         // 새로운 파일경로
         String filePath = lostPostService.getFilePath(newLostPost);
@@ -197,7 +197,7 @@ class LostPostApiController {
 
         LostPost lostPost = repository.findById(id).orElse(null);
 
-        if (lostPost == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (lostPost == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         if (lostDeleteForm.getPassword() == null || lostDeleteForm.getPassword().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호 입력 필수");

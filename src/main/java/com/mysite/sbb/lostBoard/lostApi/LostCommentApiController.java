@@ -42,7 +42,7 @@ public class LostCommentApiController {
 //    public ResponseEntity<Comment> one(@PathVariable Long id) {
 //
 //        Comment comment = commentRepository.findById(id).orElse(null);
-//        if (comment == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        if (comment == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 //        return new ResponseEntity<>(comment, HttpStatus.OK);
 //    }
 
@@ -55,10 +55,10 @@ public class LostCommentApiController {
         }
 
         LostAnswer lostAnswer = lostAnswerService.getAnswer(id);
-        if (lostAnswer == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (lostAnswer == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         LostComment lostComment = lostCommentService.create(lostAnswer, lostCommentForm);
-        if (lostComment == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (lostComment == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         CreateForm createForm = new CreateForm(lostCommentForm.getContent(), lostCommentForm.getUsername(), lostComment.getCreateDate());
 
@@ -70,7 +70,7 @@ public class LostCommentApiController {
     public ResponseEntity<ModifyForm> answerModify(@Valid @RequestBody LostComment newLostComment, @PathVariable("id") Long id) {
 
         LostComment exLostComment = lostCommentRepository.findById(id).orElse(null);
-        if (exLostComment == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (exLostComment == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청하신 데이터를 찾을 수 없습니다.");
 
         if (newLostComment.getPassword().equals(exLostComment.getPassword())) {
 
