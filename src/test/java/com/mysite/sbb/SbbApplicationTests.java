@@ -1,7 +1,7 @@
 package com.mysite.sbb;
 
-import com.mysite.sbb.meetingBoard.service.AnswerService;
-import com.mysite.sbb.meetingBoard.service.QuestionService;
+import com.mysite.sbb.meetingBoard.meetingService.AnswerService;
+import com.mysite.sbb.meetingBoard.meetingService.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
