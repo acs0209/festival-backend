@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -40,7 +41,7 @@ public class CommentService {
     public Comment create(Answer answer, String content, String username, String password) {
         Comment c = new Comment();
         c.setContent(content);
-        c.setCreateDate(LocalDateTime.now());
+        c.setCreateDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         c.setAnswer(answer);
         c.setUsername(username);
         c.setPassword(password);
@@ -49,16 +50,16 @@ public class CommentService {
     }
 
     // 질문 댓글
-    public Comment create(Question question, String content, String username, String password) {
-        Comment c = new Comment();
-        c.setContent(content);
-        c.setCreateDate(LocalDateTime.now());
-        c.setQuestion(question);
-        c.setUsername(username);
-        c.setPassword(password);
-        c = this.commentRepository.save(c);
-        return c;
-    }
+//    public Comment create(Question question, String content, String username, String password) {
+//        Comment c = new Comment();
+//        c.setContent(content);
+//        c.setCreateDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+//        c.setQuestion(question);
+//        c.setUsername(username);
+//        c.setPassword(password);
+//        c = this.commentRepository.save(c);
+//        return c;
+//    }
 
     public Optional<Comment> getComment(Long id) {
 

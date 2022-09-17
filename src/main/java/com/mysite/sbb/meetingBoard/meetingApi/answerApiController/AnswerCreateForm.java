@@ -11,10 +11,12 @@ public class AnswerCreateForm {
 
     private String content;
     private String username;
+    private String createDate;
 
-    public AnswerCreateForm(String content, String username) {
+    public AnswerCreateForm(String content, String username, String createDate) {
         this.content = content;
         this.username = username;
+        this.createDate = createDate;
     }
 
 }

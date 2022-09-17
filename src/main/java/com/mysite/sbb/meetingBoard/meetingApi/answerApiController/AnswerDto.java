@@ -17,14 +17,14 @@ public class AnswerDto {
 
     private String content;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String username;
 
     private List<Comment> commentList;
 
 
-    public AnswerDto(Long id, String content, LocalDateTime createDate,
+    public AnswerDto(Long id, String content, String createDate,
                             String username, List<Comment> commentList) {
         this.id = id;
         this.content = content;

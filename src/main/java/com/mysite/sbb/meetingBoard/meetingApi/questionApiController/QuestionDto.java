@@ -17,13 +17,13 @@ public class QuestionDto {
 
     private String content;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String username;
 
     private Integer view;
 
-    public QuestionDto(Long id, String subject, String content, LocalDateTime createDate,
+    public QuestionDto(Long id, String subject, String content, String createDate,
                        String username, Integer view) {
         this.id = id;
         this.subject = subject;

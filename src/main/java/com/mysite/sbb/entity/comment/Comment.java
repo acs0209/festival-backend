@@ -21,7 +21,7 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String username;
 

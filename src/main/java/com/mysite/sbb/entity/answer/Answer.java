@@ -26,8 +26,7 @@ public class Answer {
     @ManyToOne
     private Question question;
 
-    @CreatedDate
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String username;
     private String password;

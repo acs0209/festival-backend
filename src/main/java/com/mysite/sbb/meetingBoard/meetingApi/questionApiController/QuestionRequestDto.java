@@ -1,4 +1,4 @@
-package com.mysite.sbb.suggestionsBoard.suggestionsController.questionController;
+package com.mysite.sbb.meetingBoard.meetingApi.questionApiController;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class SuggestionsQuestionForm {
-
-    @NotEmpty(message = "아이디는 필수항목입니다.")
-    private String username;
+public class QuestionRequestDto {
 
     @NotEmpty(message = "비밀번호는 필수항목입니다.")
     private String password;

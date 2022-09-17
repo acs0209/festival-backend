@@ -11,10 +11,12 @@ public class CommentCreateForm {
 
     private String username;
     private String content;
+    private String createDate;
 
-    public CommentCreateForm(String username, String content) {
+    public CommentCreateForm(String username, String content, String createDate) {
         this.username = username;
         this.content = content;
+        this.createDate = createDate;
     }
 
 }

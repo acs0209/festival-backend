@@ -35,9 +35,9 @@ public class AnswerApiController {
 
             throw new IllegalArgumentException("잘못된 입력 값입니다.");
         }
-        this.answerService.create(question, answerForm.getContent(), answerForm.getUsername(), answerForm.getPassword());
+        Answer answer = this.answerService.create(question, answerForm.getContent(), answerForm.getUsername(), answerForm.getPassword());
 
-        AnswerCreateForm answerCreateForm = new AnswerCreateForm(answerForm.getContent(), answerForm.getUsername());
+        AnswerCreateForm answerCreateForm = new AnswerCreateForm(answerForm.getContent(), answerForm.getUsername(), answer.getCreateDate());
         return ResponseEntity.ok(answerCreateForm);
     }
 

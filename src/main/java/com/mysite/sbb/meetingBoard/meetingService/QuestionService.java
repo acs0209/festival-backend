@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,15 +63,15 @@ public class QuestionService {
        아닌지를 확인한 후에 get() 으로 실제 Question 객체 값을 얻어야 한다.
     * */
     }
-    public void create(String subject, String content, String username, String password) {
+    public Question create(String subject, String content, String username, String password) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
-        q.setCreateDate(LocalDateTime.now());
+        q.setCreateDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         q.setUsername(username);
         q.setPassword(password);
         this.questionRepository.save(q);
-        //return q;
+        return q;
     }
 
     public void modify(Question question, String subject, String content) {

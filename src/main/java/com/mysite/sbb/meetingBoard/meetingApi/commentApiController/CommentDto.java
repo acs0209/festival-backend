@@ -15,12 +15,12 @@ public class CommentDto {
 
     private String content;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String username;
 
 
-    public CommentDto(Long id, String content, LocalDateTime createDate, String username) {
+    public CommentDto(Long id, String content, String createDate, String username) {
         this.id = id;
         this.content = content;
         this.createDate = createDate;

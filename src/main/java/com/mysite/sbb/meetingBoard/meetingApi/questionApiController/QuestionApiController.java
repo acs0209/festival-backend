@@ -108,9 +108,9 @@ public class QuestionApiController {
             throw new IllegalArgumentException("잘못된 입력 값입니다.");
         }
 
-        questionService.create(questionForm.getSubject(), questionForm.getContent(), questionForm.getUsername(), questionForm.getPassword());
+        Question question = questionService.create(questionForm.getSubject(), questionForm.getContent(), questionForm.getUsername(), questionForm.getPassword());
 
-        QuestionApiForm questionApiForm = new QuestionApiForm(questionForm.getSubject(), questionForm.getContent(), questionForm.getUsername());
+        QuestionApiForm questionApiForm = new QuestionApiForm(questionForm.getSubject(), questionForm.getContent(), questionForm.getUsername(), question.getCreateDate());
         return ResponseEntity.ok(questionApiForm);
     }
 
@@ -127,7 +127,7 @@ public class QuestionApiController {
 
     // 수정 api
     @PutMapping("/{id}")
-    public ResponseEntity<QuestionModifyForm> questionModify(@Valid @RequestBody QuestionForm questionForm, BindingResult bindingResult,
+    public ResponseEntity<QuestionModifyForm> questionModify(@Valid @RequestBody QuestionRequestDto questionRequestDto, BindingResult bindingResult,
                                             @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException("잘못된 입력 값입니다.");
@@ -135,11 +135,11 @@ public class QuestionApiController {
 
         Question question = this.questionService.getQuestion(id);
 
-        if (!question.getPassword().equals(questionForm.getPassword())) {
+        if (!question.getPassword().equals(questionRequestDto.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
         }
 
-        this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
+        this.questionService.modify(question, questionRequestDto.getSubject(), questionRequestDto.getContent());
         QuestionModifyForm questionModifyForm = new QuestionModifyForm(question.getSubject(), question.getContent());
         return ResponseEntity.ok(questionModifyForm);
     }

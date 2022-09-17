@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +26,15 @@ public class AnswerService {
     private final QuestionService questionService;
 
     // 답변 생성
-    public void create(Question question, String content, String username, String password) {
+    public Answer create(Question question, String content, String username, String password) {
         Answer answer = new Answer();
         answer.setContent(content);
-        answer.setCreateDate(LocalDateTime.now());
+        answer.setCreateDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         answer.setQuestion(question);
         answer.setUsername(username);
         answer.setPassword(password);
         this.answerRepository.save(answer);
+        return answer;
     }
 
     // 답변 페이징 처리

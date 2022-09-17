@@ -25,7 +25,7 @@ public class Question {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createDate; //date변경
+    private String createDate; //date변경
 
     private String username;
     private String password;
