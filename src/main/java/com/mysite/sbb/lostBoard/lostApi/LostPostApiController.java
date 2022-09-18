@@ -97,7 +97,7 @@ class LostPostApiController {
 
     // 글 작성 API
     @PostMapping("/posts")
-    LostPost newQuestion(@Valid LostPost newLostPost, MultipartFile file, BindingResult bindingResult, HttpServletRequest request) throws Exception {
+    LostPost newQuestion(@Valid LostPost newLostPost, MultipartFile file, BindingResult bindingResult) throws Exception {
 
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException("잘못된 입력 값입니다.");
@@ -113,7 +113,7 @@ class LostPostApiController {
         if (file == null) {
             repository.save(newLostPost);
         } else {
-            lostPostService.write(newLostPost, file, request);
+            lostPostService.write(newLostPost, file);
         }
 
         return repository.findById(newLostPost.getId()).orElse(null);
@@ -121,7 +121,7 @@ class LostPostApiController {
 
     // 글 수정 API
     @PutMapping("/posts/{id}")
-    ResponseEntity<LostPost> replaceQuestion(@Valid LostPost newLostPost, @PathVariable Long id, MultipartFile file, BindingResult bindingResult, HttpServletRequest request) {
+    ResponseEntity<LostPost> replaceQuestion(@Valid LostPost newLostPost, @PathVariable Long id, MultipartFile file, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException("잘못된 입력 값입니다.");
@@ -162,7 +162,7 @@ class LostPostApiController {
                                     deleteFile.delete();
                                 }
 
-                                lostPostService.write(question, file, request);
+                                lostPostService.write(question, file);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }

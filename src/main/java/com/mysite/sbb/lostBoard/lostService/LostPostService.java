@@ -19,12 +19,11 @@ public class LostPostService {
     private LostPostRepository lostPostRepository;
 
     // 글 등록
-    public void write(LostPost lostPost, MultipartFile file, HttpServletRequest request) throws Exception {
+    public void write(LostPost lostPost, MultipartFile file) throws Exception {
 
         if (!file.getOriginalFilename().isEmpty()) {
 
             String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-            String filePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
 
             UUID uuid = UUID.randomUUID();
 
@@ -35,7 +34,7 @@ public class LostPostService {
             file.transferTo(saveFile);
 
             lostPost.setFilename(fileName);
-            lostPost.setFilepath(filePath + "/files/" + fileName);
+            lostPost.setFilepath("/files/" + fileName);
 
         }
 
